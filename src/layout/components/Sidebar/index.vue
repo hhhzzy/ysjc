@@ -52,6 +52,7 @@ export default class Siderbar extends Vue {
     get activeMenu() {
         const route = this.$route
         const { meta, path } = route
+        console.log(route, 5555)
         if (meta.activeMenu) {
             return meta.activeMenu
         }

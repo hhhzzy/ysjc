@@ -12,6 +12,7 @@ Vue.use(VueRouter)
  *  alwaysShow: false // 一个路由下面有多个子路由的时候自动变成嵌套模式。小于一个或者没有的时候只显示跟路由。设置为true的话就会，一个子路由也会显示成嵌套路由。默认为false
  *  hidden:true  是否在菜单栏显示，true：隐藏  false：显示。默认为：false
  *  affix：tag固定在导航上面，不可删除
+ *  activeMenu：详情页的时候菜单栏高亮
  *
  * }
  * redirect：noredirect // 链接不能跳转
@@ -52,7 +53,7 @@ export const constRouter: Array<RouteConfig> = [
                 name: 'Home',
                 component: () => import('@/views/home/home.vue'),
                 meta: {
-                    title: '首页',
+                    title: '订单',
                     icon: 'dashboard',
                     affix: true
                 }
@@ -63,54 +64,18 @@ export const constRouter: Array<RouteConfig> = [
         path: '/level',
         name: 'Level',
         meta: {
-            title: '路由嵌套',
+            title: '商品分类',
             icon: 'lock'
         },
         component: () => import('@/layout/index.vue'),
-        redirect: '/level/level_2',
         children: [
             {
                 path: 'level_1',
                 name: 'Level_1',
                 meta: {
-                    title: '菜单一'
+                    title: '商品分类'
                 },
-                redirect: '/level/level_1/level_1_2',
-                component: () => import('@/views/level/level_1/level_1.vue'),
-                children: [
-                    {
-                        path: ':id/level_1_1',
-                        name: 'level_1_1',
-                        meta: {
-                            title: '菜单_1_1'
-                        },
-                        component: () => import('@/views/level/level_1/level_1_1.vue')
-                    },
-                    {
-                        path: 'level_1_2',
-                        name: 'level_1_2',
-                        meta: {
-                            title: '菜单_1_2'
-                        },
-                        component: () => import('@/views/level/level_1/level_1_2.vue')
-                    }
-                ]
-            },
-            {
-                path: 'level_2',
-                name: 'Level_2',
-                meta: {
-                    title: '菜单二'
-                },
-                component: () => import('@/views/level/level_2/level_2.vue')
-            },
-            {
-                path: 'level_3',
-                name: 'Level_3',
-                meta: {
-                    title: '菜单三'
-                },
-                component: () => import('@/views/level/level_3/level_3.vue')
+                component: () => import('@/views/level/level.vue')
             }
         ]
     }
@@ -121,6 +86,38 @@ export const constRouter: Array<RouteConfig> = [
  * 动态路由，需要权限
  */
 export const asyncRouter:Array<RouteConfig> = [
+    {
+        path: '/goods',
+        name: 'Goods',
+        meta: {
+            title: '商品',
+            roles: ['admin'],
+            icon: 'user'
+        },
+        component: () => import('@/layout/index.vue'),
+        children: [
+            {
+                path: 'goodsList',
+                name: 'GoodsList',
+                meta: {
+                    title: '商品列表',
+                    roles: ['admin']
+                },
+                component: () => import('@/views/goods/list.vue')
+            },
+            {
+                path: 'goodsDetail',
+                name: 'GoodsDetail',
+                meta: {
+                    title: '商品详情',
+                    roles: ['admin'],
+                    hidden: true,
+                    activeMenu: '/goods/goodsList'
+                },
+                component: () => import('@/views/goods/detail.vue')
+            }
+        ]
+    },
     {
         path: '/permission',
         name: 'Permission',
@@ -133,15 +130,15 @@ export const asyncRouter:Array<RouteConfig> = [
         },
         component: () => import('@/layout/index.vue'),
         children: [
-            {
-                path: 'role',
-                name: 'Role',
-                meta: {
-                    title: '角色',
-                    roles: ['editor']
-                },
-                component: () => import('@/views/permission/roles.vue')
-            },
+            // {
+            //     path: 'role',
+            //     name: 'Role',
+            //     meta: {
+            //         title: '角色',
+            //         roles: ['editor']
+            //     },
+            //     component: () => import('@/views/permission/roles.vue')
+            // },
             {
                 path: 'user',
                 name: 'User',
@@ -149,7 +146,7 @@ export const asyncRouter:Array<RouteConfig> = [
                     title: '用户',
                     roles: ['admin']
                 },
-                component: () => import('@/views/permission/roles.vue')
+                component: () => import('@/views/permission/user.vue')
             }
         ]
     },

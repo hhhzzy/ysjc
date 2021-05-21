@@ -9,7 +9,7 @@
                 <header-bar />
                 <tags-nav />
             </div>
-            <div class="app-container" style="height:1000px;">
+            <div class="app-container">
                 <keep-alive :include="cachedTags">
                     <router-view :key="key" />
                 </keep-alive>
@@ -115,6 +115,10 @@ export default class Layout extends Vue {
         left: 0;
         top: 0;
         width: 100%;
+        z-index: 999;
+    }
+    .main-container{
+        height: 100%;
     }
     .fixed-header{
         position: fixed;
@@ -140,6 +144,7 @@ export default class Layout extends Vue {
     }
     .app-container{
         padding-top:155px;
+        height: 100%!important;
     }
 }
 .app-container{

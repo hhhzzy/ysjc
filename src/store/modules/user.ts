@@ -1,7 +1,7 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
 import store from '@/store'
-import { login, getUserInfo } from '@/api/user'
-import { ILoginData, IUserData } from '@/api/types'
+import { login } from '@/api/user'
+import { ILoginData } from '@/api/types'
 import { getToken, setToken, removeToken } from '@/utils/cookies'
 import { resetRouter } from '@/router/router'
 import { TagModule } from '@/store/modules/tagsNav'
@@ -34,7 +34,8 @@ class User extends VuexModule implements IUserState {
     @Action({ rawError: true })
     public async Login(userInfo: ILoginData) {
         console.log(userInfo)
-        userInfo.userName.trim()
+        userInfo.UserAccount.trim()
+        console.log(login)
         const data = await login(userInfo)
         console.log(data.data)
         setToken(data.data.result.token)
@@ -46,11 +47,11 @@ class User extends VuexModule implements IUserState {
             throw Error('没有token，请返回重新登录！')
         }
         console.log(this.token, 46)
-        const data = (await getUserInfo<IUserData>(this.token)).data.result
+        // const data = (await getUserInfo<IUserData>(this.token)).data.result
         console.log(48)
-        this.SET_ROLES(data.roles)
-        this.SET_USER(data)
-        console.log(data.roles)
+        this.SET_ROLES(['admin'])
+        // this.SET_USER(data)
+        // console.log(data.roles)
     }
     @Action({ rawError: true })
     public Layout() { // 退出登录

@@ -3,6 +3,7 @@ const resolve = dir => {
     return path.join(__dirname, dir)
 }
 module.exports = {
+    publicPath: '/',
     configureWebpack: {
         // 文件夹通过@定位到src
         resolve: {

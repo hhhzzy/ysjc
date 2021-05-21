@@ -1,21 +1,28 @@
 import axios from 'axios'
-// import { Message, MessageBox } from 'element-ui'
+import { Message } from 'element-ui'
 import url from './url'
+import { getToken } from '@/utils/cookies'
 // import router from '../router'
-
+// 获取CancelToken
+const CancelToken = axios.CancelToken
+const source = CancelToken.source()
 const ajax = axios.create({
     baseURL: url, // 请求地址
     timeout: 30000 // 请求超时
 })
 let requestNum:number = 0 // 请求的数量
-ajax.defaults.headers.post['Content-Type'] = 'application/json' // post 的 请求头设置
+ajax.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded' // post 的 请求头设置
 // 请求拦截
 ajax.interceptors.request.use(config => {
     // 每次请求之前判断vuex中的token是否存在（也可以存在stroge里面）
     // 如果存在，则统一在请求的header中加上token，后台判断是否登录
     // 即使存在token，也有可能过期，所以在响应拦截中也要判断状态
-    const token = localStorage.getItem('token')
-    token && (config.headers.Authorization = 'Bearer' + token) // jwt验证
+    // 先把config.url进行URI编码，然后全局替换其中的特殊字符，然后再URI解码
+    config.url = config.url ? decodeURI(encodeURI(config.url).replace(/%E2%80%8B/g, '')) : config.url
+    const token = getToken()
+    // token && (config.headers.Authorization = 'Bearer' + token) // jwt验证
+    token && (config.headers.Authorization = token)
+    console.log(config, 10)
     // 全局loading
     if (requestNum === 0) {
         console.log('展示loading')
@@ -33,11 +40,17 @@ ajax.interceptors.response.use(
         if (requestNum === 0) {
             console.log('隐藏loading')
         }
-        return response
+        console.log(response.data, 39)
+        if (response.data.code === 404) {
+            Message.error(response.data.msg)
+            source.cancel()
+            return Promise.reject(response.data.message)
+        } else {
+            return response
+        }
     },
     // 状态码提示
     (err) => {
-        console.log(err)
         if (err && err.response) {
             switch (err.response.status) {
                 case 400:

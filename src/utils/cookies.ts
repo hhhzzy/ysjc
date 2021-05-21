@@ -2,7 +2,7 @@
 import Cookie from 'js-cookie'
 
 // token
-const tokenKey = 'hzy_element_typescript_token'
+const tokenKey = 'ysjc_token'
 export const getToken = () => Cookie.get(tokenKey)
 export const setToken = (token: string) => Cookie.set(tokenKey, token)
 export const removeToken = () => Cookie.remove(tokenKey)

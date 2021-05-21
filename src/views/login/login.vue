@@ -7,11 +7,11 @@
                 </div>
                 <div class="form-con">
                     <el-form ref="ruleForm" :model="form" :rules="rules" class="demo-ruleForm" @keydown.enter.native="handleSubmit('ruleForm')">
-                        <el-form-item prop="userName">
-                            <el-input v-model="form.userName" placeholder="请输入用户名" />
+                        <el-form-item prop="UserAccount">
+                            <el-input v-model="form.UserAccount" placeholder="请输入用户名" />
                         </el-form-item>
-                        <el-form-item prop="password">
-                            <el-input v-model="form.password" type="password" placeholder="请输入密码" />
+                        <el-form-item prop="UserPassword">
+                            <el-input v-model="form.UserPassword" type="password" placeholder="请输入密码" />
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="handleSubmit('ruleForm')">登录</el-button>
@@ -37,14 +37,14 @@ import { Route } from 'vue-router'
 
 export default class Login extends Vue {
     private form: ILoginData = {
-        userName: '',
-        password: ''
+        UserAccount: 'malladmin',
+        UserPassword: 'NbiZ9vyQfR8,iPu8'
     }
     private rules: object = {
-        userName: [
+        UserAccount: [
             { required: true, message: '请输入姓名', trigger: 'blur' }
         ],
-        password: [
+        UserPassword: [
             { required: true, message: '请输入密码', trigger: 'blur' }
         ]
     }
