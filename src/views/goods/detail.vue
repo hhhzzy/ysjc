@@ -46,6 +46,14 @@
                                     </el-upload>
                                 </el-form-item>
                             </el-col>
+                            <el-col :span="24">
+                                <el-form-item label="是否在主页显示：" label-width="150px">
+                                    <el-radio-group v-model="ruleForm.isShowIndex">
+                                        <el-radio :label="1">是</el-radio>
+                                        <el-radio :label="0">否</el-radio>
+                                    </el-radio-group>
+                                </el-form-item>
+                            </el-col>
                         </el-row>
                     </div>
                     <div class="border-box">
@@ -111,6 +119,7 @@ interface IRuleFormData {
     FirstSort: any
     SecondSort: any
     ThirdSort: any
+    isShowIndex: number
 }
 
 @Component({
@@ -121,7 +130,8 @@ export default class GoodDetail extends Vue {
         GoodsImgs: '',
         FirstSort: '',
         SecondSort: '',
-        ThirdSort: ''
+        ThirdSort: '',
+        isShowIndex: 0
     }
     private rules: object = {
         GoodsName: [

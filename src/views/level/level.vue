@@ -39,13 +39,22 @@
                     align="center"
                 />
                 <el-table-column
+                    prop="isShowIndex"
+                    label="是否在首页显示"
+                    width="200"
+                    align="center"
+                >
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.isShowIndex==0?'否':'是' }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
                     prop="Imgs"
                     label="预览图"
                     align="center"
                 >
                     <template slot-scope="scope">
                         <img v-if="scope.row.Imgs" :src="imgUrl+scope.row.Imgs" alt="" />
-                        8448948
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -194,6 +203,12 @@
                 <el-form-item v-if="levelType == 'three'" label="三级分类：">
                     <el-input v-model="form.CategoryName" placeholder="请输入三级分类" />
                 </el-form-item>
+                <el-form-item v-if="levelType == 'one'" label="是否在主页显示：">
+                    <el-radio-group v-model="form.isShowIndex">
+                        <el-radio :label="1">是</el-radio>
+                        <el-radio :label="0">否</el-radio>
+                    </el-radio-group>
+                </el-form-item>
                 <el-form-item label="排序号：">
                     <el-input v-model="form.SortNum" placeholder="请输入排序号" />
                 </el-form-item>
@@ -234,6 +249,7 @@ interface IFormData{
     ParentId?: string
     SortNum?: number | null
     Imgs: string
+    isShowIndex: number
 }
 @Component({
     name: 'Level',
@@ -251,7 +267,8 @@ export default class Level extends Vue {
     private form: IFormData = {
         CategoryName: '',
         CategoryLevel: 1,
-        Imgs: ''
+        Imgs: '',
+        isShowIndex: 0
     }
     private rules: object = {
         CategoryName: [
@@ -279,7 +296,8 @@ export default class Level extends Vue {
         this.form = {
             CategoryName: '',
             CategoryLevel: 1,
-            Imgs: ''
+            Imgs: '',
+            isShowIndex: 0
         }
         if (type === 'two' || type === 'three') {
             this.inquireGoodType(type)

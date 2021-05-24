@@ -68,6 +68,16 @@
                     label="排序号"
                 />
                 <el-table-column
+                    prop="isShowIndex"
+                    label="是否在首页显示"
+                    width="200"
+                    align="center"
+                >
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.isShowIndex==0?'否':'是' }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
                     prop="address"
                     label="商品图片"
                     width="250"
